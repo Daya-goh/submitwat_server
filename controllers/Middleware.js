@@ -8,6 +8,7 @@ const userVerification = async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, SECRET);
+    // console.log(payload);
     const user = await pool.query(
       "SELECT * FROM teachers WHERE username = $1",
       [payload.username]
@@ -16,6 +17,7 @@ const userVerification = async (req, res, next) => {
       res.status(401).send("No entry");
     } else {
       req.userDetail = payload.username;
+      req.userid = payload.userid;
       next();
     }
   } catch (error) {

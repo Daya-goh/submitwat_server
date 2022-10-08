@@ -13,7 +13,7 @@ const SECRET = process.env.SECRET;
 router.post("/login", async (req, res) => {
   // get username and password from form
   const { username, password } = req.body;
-  console.log(username, password);
+  // console.log(username, password);
   try {
     // search for username in db
     const user = await pool.query(
@@ -32,13 +32,13 @@ router.post("/login", async (req, res) => {
       const payload = { userid, username };
       // generate jwt token on successful login
       const token = jwt.sign(payload, SECRET, { expiresIn: "24h" });
-      console.log(jwt.verify(token, SECRET));
+      // console.log(jwt.verify(token, SECRET));
       // response to client - msg, token, username
       res.status(200).send({ msg: "Login successful.", token, username });
     }
   } catch (error) {
     console.log(error);
-    console.log("im here");
+    // console.log("im here");
     res.status(401).send({ msg: "Wrong username or password." });
   }
 });

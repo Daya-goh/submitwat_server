@@ -10,12 +10,14 @@ const pool = require("./db");
 
 const UserController = require("./controllers/UserController");
 const MainController = require("./controllers/MainController");
+const SubmitWatController = require("./controllers/SubmitwatController");
 
 app.use(cors());
 app.use(express.json());
 /* -------------------- controllers middleware -------------------- */
 app.use("/", UserController);
 app.use("/main", MainController);
+app.use("/submitwat", SubmitWatController);
 
 /* ---------------------------------------------------------------- */
 app.get("/", (req, res) => {
