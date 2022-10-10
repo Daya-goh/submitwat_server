@@ -37,7 +37,7 @@ router.post("/login", async (req, res) => {
       res.status(200).send({ msg: "Login successful.", token, username });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     // console.log("im here");
     res.status(401).send({ msg: "Wrong username or password." });
   }
@@ -54,7 +54,7 @@ router.post("/signup", async (req, res) => {
     );
     res.status(200).send(newUser);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(400).send({ msg: "Cannot create account." });
   }
 });

@@ -22,7 +22,7 @@ const userVerification = async (req, res, next) => {
     }
   } catch (error) {
     // console.log(error);
-    res.status(401).send({ msg: "middleware error" });
+    res.status(401).send({ msg: "Authentication error, please login again" });
   }
 };
 

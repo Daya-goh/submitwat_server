@@ -11,12 +11,11 @@ const SECRET = process.env.SECRET;
 router.get("/", userVerification, async (req, res) => {
   //   res.status(200).send("submitwat overivew");
   const userid = req.userid;
-  console.log(userid);
+  // console.log(userid);
   const data = await pool.query(
     "SELECT * FROM teacher_class WHERE teacher_id = $1",
     [userid]
   );
-  // console.log(data);
   res.send(data);
 });
 
@@ -33,7 +32,6 @@ router.post("/addclass", userVerification, async (req, res) => {
     );
     res.status(200).send(addClass);
   } catch (error) {
-    // console.log(error);
     res.status(400).send(error);
   }
 });
@@ -43,8 +41,6 @@ router.post("/addclasslist", userVerification, async (req, res) => {
   // res.send("class list");
   const { array, newClass } = req.body;
   const teacher_id = req.userid;
-  console.log(array);
-  console.log(teacher_id);
   // res.send(newClass);
 
   const classArray = [];
@@ -79,7 +75,6 @@ router.post("/addclasslist", userVerification, async (req, res) => {
       .status(200)
       .send({ createTable, classArray, createHWTable, classArrayHW });
   } catch (error) {
-    console.log(error);
     res.status(400).send({ msg: "error", error });
   }
 });
@@ -99,25 +94,88 @@ router.get("/:id", userVerification, async (req, res) => {
   }
 });
 
+router.post("/:id/addhw", userVerification, async (req, res) => {
+  const hwInfo = req.body;
+  const className = req.params;
+  const teacher_id = req.userid;
+  const date = hwInfo.date.split("-").join("");
+  console.log(hwInfo.date.split("-").join(""));
+  console.log(className);
+  const hwColumnName = `${hwInfo.keyword}_${date}`;
+  // res.status(200).send({ hwInfo, className });
+
+  try {
+    const addHwColumn = await pool.query(
+      `ALTER TABLE class_${className.id}_homework_${teacher_id} ADD COLUMN ${hwColumnName} VARCHAR(50)`
+    );
+    res.status(200).send({ addHwColumn, hwColumnName });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+router.get("/:id/addhw/:name", userVerification, async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.params;
+  const teacher_id = req.userid;
+
+  try {
+    const hwTable = await pool.query(
+      `SELECT student_id, student_name, ${name} FROM class_${id}_homework_${teacher_id}`
+    );
+    res.status(200).send(hwTable);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+router.put("/:id/addhw/:name", userVerification, async (req, res) => {
+  // res.send("update table");
+  const { id } = req.params;
+  const { name } = req.params;
+  const teacher_id = req.userid;
+
+  const array = [];
+  const details = req.body;
+  console.log(id, name, teacher_id);
+  console.log(details[0].status);
+  try {
+    for (let i = 0; i < details.length; i++) {
+      console.log(i);
+      const update = await pool.query(
+        `UPDATE class_${id}_homework_${teacher_id} SET ${name}= $1 WHERE student_id = $2`,
+        [details[i].status, i + 1]
+      );
+      array.push(update);
+      // console.log(update);
+    }
+    res.send(array);
+  } catch (error) {
+    console.log(error);
+    res.send({ msg: "error" });
+  }
+});
+
+/* ------------------- get one homework details ------------------- */
+router.get("/:id/:homeworkName", userVerification, async (req, res) => {
+  const { id } = req.params;
+  const { homeworkName } = req.params;
+  const teacher_id = req.userid;
+  console.log(homeworkName);
+  console.log(id);
+
+  // res.send(homeworkName);
+  try {
+    const homework = await pool.query(
+      `SELECT student_id, student_name, class_name, ${homeworkName} FROM class_${id}_homework_${teacher_id}`
+    );
+    res.status(200).send(homework);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
 module.exports = router;
-
-// try {
-//   const createTable = await pool.query(
-//     `CREATE TABLE class_${newClass} (student_id SERIAL PRIMARY KEY, student_name VARCHAR(50) NOT NULL, class_name VARCHAR(30) NOT NULL;`
-//   );
-
-// console.log(createTable);
-// for (const each of array) {
-//   const addClassList = pool.query(
-//     `INSERT INTO class_${newClass} (student_name, class_name) VALUES($1,$2)`,
-//     [each, newClass]
-//   );
-//   classArray.push(addClassList);
-// }
-// console.log(classArray);
-// res.status(200).send({ createTable, classArray });
-// res.send(createTable);
-// } catch (error) {
-//   console.log(error);
-//   res.status(400).send(error);
-// }
