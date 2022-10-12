@@ -58,7 +58,7 @@ router.post("/addclasslist", userVerification, async (req, res) => {
 
     for (const each of array) {
       const addClassList = pool.query(
-        `INSERT INTO class_${newClass.keyword}_${teacher_id} (student_id, student_name, class_name) VALUES($1,$2, $3)`,
+        `INSERT INTO class_${newClass.keyword}_${teacher_id} (student_id, student_name, class_name) VALUES($1,$2, $3) ORDER BY student_id`,
         [each.id, each.Name, newClass.keyword]
       );
       classArray.push(addClassList);
@@ -66,24 +66,20 @@ router.post("/addclasslist", userVerification, async (req, res) => {
 
     for (const each of array) {
       const addClassList = pool.query(
-        `INSERT INTO class_${newClass.keyword}_homework_${teacher_id} (student_name, class_name) VALUES($1,$2)`,
-        [each.Name, newClass.keyword]
+        `INSERT INTO class_${newClass.keyword}_homework_${teacher_id} (student_id, student_name, class_name) VALUES($1,$2, $3) `,
+        [each.id, each.Name, newClass.keyword]
       );
       classArrayHW.push(addClassList);
     }
 
-    const addHwTableToTeacher = await pool.query(
-      `UPDATE teacher_class SET homework_table = $1 WHERE class_name =$2`,
-      [`class_${newClass.keyword}_homework_${teacher_id}`, newClass.keyword]
-    );
     res.status(200).send({
       createTable,
       classArray,
       createHWTable,
       classArrayHW,
-      addHwTableToTeacher,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ msg: "error", error });
   }
 });

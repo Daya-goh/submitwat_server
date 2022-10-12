@@ -54,7 +54,7 @@ router.post("/signup", async (req, res) => {
     );
     res.status(200).send(newUser);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(400).send({ msg: "Cannot create account." });
   }
 });
