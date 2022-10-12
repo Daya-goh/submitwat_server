@@ -72,9 +72,17 @@ router.post("/addclasslist", userVerification, async (req, res) => {
       classArrayHW.push(addClassList);
     }
 
-    res
-      .status(200)
-      .send({ createTable, classArray, createHWTable, classArrayHW });
+    const addHwTableToTeacher = await pool.query(
+      `UPDATE teacher_class SET homework_table = $1 WHERE class_name =$2`,
+      [`class_${newClass.keyword}_homework_${teacher_id}`, newClass.keyword]
+    );
+    res.status(200).send({
+      createTable,
+      classArray,
+      createHWTable,
+      classArrayHW,
+      addHwTableToTeacher,
+    });
   } catch (error) {
     res.status(400).send({ msg: "error", error });
   }
