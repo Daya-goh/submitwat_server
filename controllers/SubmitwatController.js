@@ -53,7 +53,7 @@ router.post("/addclasslist", userVerification, async (req, res) => {
     );
 
     const createHWTable = await pool.query(
-      `CREATE TABLE class_${newClass.keyword}_homework_${teacher_id}  student_id INT PRIMARY KEY, student_name VARCHAR(50) NOT NULL, class_name VARCHAR(30))`
+      `CREATE TABLE class_${newClass.keyword}_homework_${teacher_id} (id SERIAL PRIMARY KEY, student_id INT NOT NULL, student_name VARCHAR(50) NOT NULL, class_name VARCHAR(30))`
     );
 
     for (const each of array) {
