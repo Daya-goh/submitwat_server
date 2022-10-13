@@ -71,12 +71,17 @@ router.post("/addclasslist", userVerification, async (req, res) => {
       );
       classArrayHW.push(addClassList);
     }
+    const addClass = await pool.query(
+      "INSERT INTO teacher_class (class_name, teacher_id) VALUES($1,$2)",
+      [newClass.keyword, teacher_id]
+    );
 
     res.status(200).send({
       createTable,
       classArray,
       createHWTable,
       classArrayHW,
+      addClass,
     });
   } catch (error) {
     console.log(error);
@@ -126,6 +131,7 @@ router.post("/:id/addhw", userVerification, async (req, res) => {
   }
 });
 
+/* ------------------- get one homework details ------------------- */
 router.get("/:id/addhw/:homeworkName", userVerification, async (req, res) => {
   const { id } = req.params;
   const { homeworkName } = req.params;

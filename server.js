@@ -4,9 +4,6 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT ?? 4567;
 const pool = require("./db");
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
-// const SECRET = process.env.SECRET;
 
 const UserController = require("./controllers/UserController");
 const MainController = require("./controllers/MainController");
