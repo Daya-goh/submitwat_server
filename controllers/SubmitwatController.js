@@ -192,11 +192,19 @@ router.get("/:id/:homeworkName", userVerification, async (req, res) => {
       `SELECT COUNT(*) AS SubmittedTotal FROM class_${id}_homework_${teacher_id} WHERE ${homeworkName} IN ($1,$2)`,
       ["submitted", "late"]
     );
+
+    const totalNum = await pool.query(
+      `SELECT COUNT(*) AS SubmittedTotal FROM class_${id}_homework_${teacher_id}`
+    );
+
     const notSubmittedList = await pool.query(
       `SELECT student_name FROM class_${id}_homework_${teacher_id} WHERE ${homeworkName} NOT IN ($1, $2)`,
       ["submitted", "late"]
     );
-    res.status(200).send({ homework, submittedNum, notSubmittedList });
+    console.log(totalNum);
+    res
+      .status(200)
+      .send({ homework, submittedNum, notSubmittedList, totalNum });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
