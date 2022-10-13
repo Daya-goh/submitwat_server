@@ -71,17 +71,17 @@ router.post("/addclasslist", userVerification, async (req, res) => {
       );
       classArrayHW.push(addClassList);
     }
-    const addClass = await pool.query(
-      "INSERT INTO teacher_class (class_name, teacher_id) VALUES($1,$2)",
-      [newClass.keyword, teacher_id]
-    );
+    // const addClass = await pool.query(
+    //   "INSERT INTO teacher_class (class_name, teacher_id) VALUES($1,$2)",
+    //   [newClass.keyword, teacher_id]
+    // );
 
     res.status(200).send({
       createTable,
       classArray,
       createHWTable,
       classArrayHW,
-      addClass,
+      // addClass,
     });
   } catch (error) {
     console.log(error);
@@ -95,7 +95,7 @@ router.get("/:id", userVerification, async (req, res) => {
   const teacher_id = req.userid;
   try {
     const classHwTable = await pool.query(
-      `SELECT * FROM class_${className.id}_homework_${teacher_id} ORDER BY student_id`
+      `SELECT student_id, student_name, class_name FROM class_${className.id}_homework_${teacher_id} ORDER BY student_id`
     );
     res.status(200).send(classHwTable);
   } catch (error) {
