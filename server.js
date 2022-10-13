@@ -8,7 +8,7 @@ const pool = require("./db");
 const UserController = require("./controllers/UserController");
 const MainController = require("./controllers/MainController");
 const SubmitWatController = require("./controllers/SubmitwatController");
-const ModifiedSubmitWatController = require("./controllers/ModifiedSubmitWatController");
+// const ModifiedSubmitWatController = require("./controllers/ModifiedSubmitWatController");
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use("/", UserController);
 app.use("/main", MainController);
 app.use("/submitwat", SubmitWatController);
-app.use("/modified/submitwat", ModifiedSubmitWatController);
+// app.use("/modified/submitwat", ModifiedSubmitWatController);
 
 /* ---------------------------------------------------------------- */
 app.get("/", (req, res) => {
@@ -30,6 +30,8 @@ app.get("/users", async (req, res) => {
 });
 
 /* ---------------------------------------------------------------- */
+// app.get('/*', ())
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
