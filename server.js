@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT ?? 4567;
 const pool = require("./db");
+const path = require("path");
 
 const UserController = require("./controllers/UserController");
 const MainController = require("./controllers/MainController");
@@ -30,7 +31,9 @@ app.get("/users", async (req, res) => {
 });
 
 /* ---------------------------------------------------------------- */
-// app.get('/*', ())
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/dist", "index.html"));
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
