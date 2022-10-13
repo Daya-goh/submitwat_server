@@ -1,11 +1,11 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcrypt");
+// const jwt = require("jsonwebtoken");
 const pool = require("../db");
 const userVerification = require("./Middleware");
 
 const router = express.Router();
-const SECRET = process.env.SECRET;
+// const SECRET = process.env.SECRET;
 
 /* -------------- display class in teacher's account ------------- */
 router.get("/", userVerification, async (req, res) => {
@@ -142,6 +142,7 @@ router.get("/:id/addhw/:homeworkName", userVerification, async (req, res) => {
   }
 });
 
+/* -------------------- update homework status -------------------- */
 router.put("/:id/addhw/:homeworkName", userVerification, async (req, res) => {
   // res.send("update table");
   const { id } = req.params;
@@ -168,7 +169,7 @@ router.put("/:id/addhw/:homeworkName", userVerification, async (req, res) => {
   }
 });
 
-/* ------------------- get one homework details ------------------- */
+/* ------------------- get homework details ------------------- */
 router.get("/:id/:homeworkName", userVerification, async (req, res) => {
   const { id } = req.params;
   const { homeworkName } = req.params;
