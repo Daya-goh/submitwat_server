@@ -16,6 +16,10 @@ The inspiration for this project came from my personal experience as a teacher. 
 
 This is a homework management app to help teachers streamline the process of collecting, tracking and managing homeworks given to classes. Teachers can easily log the submission status of students' homework easily, have an overivew of the students submission, a notes tracker to help them keep the notes during marking. 
 
+*Login details*
+username: teacher1
+password: Teacher1!
+
 Click on the link to learn more about this application!
 https://prezi.com/view/exd3mdU5BKCcMtfG4nhw/
 <img width="1159" alt="Screenshot 2022-11-24 at 2 35 00 AM" src="https://user-images.githubusercontent.com/108121984/203622907-b3831101-b518-48ba-84d4-3e18fad35207.png">
